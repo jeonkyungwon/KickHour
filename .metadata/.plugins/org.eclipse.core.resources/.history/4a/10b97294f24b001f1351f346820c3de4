@@ -1,0 +1,5 @@
+package com.ureca.person.model.service;
+
+public interface UserService {
+
+}

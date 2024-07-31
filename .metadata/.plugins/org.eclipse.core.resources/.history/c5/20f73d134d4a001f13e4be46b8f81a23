@@ -1,0 +1,62 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KickHour</title>
+<style>
+	html,
+	body {
+		width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+	}
+    .container {
+        background-image: url('${pageContext.request.contextPath}/static/background.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+	  	justify-content: center;
+ 	 	align-items: center;
+    }
+    .btnbox {
+    }
+    .loginbox {
+    	margin-top: 3%;
+    }
+    button {
+    	background-color: #3460FE;
+    	border-radius: 10px;
+    	width: 110px;
+    	height: 50px;
+    	font-size: 20px;
+    	color: #FFFFFF;
+    	border: none;
+    }
+    img {
+    	width: 545px;
+    	height: 468px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <img src="${pageContext.request.contextPath}/static/Logo.png"></img>
+        <form method="post" action="joinAction.jsp">
+	        <label for="userID">ID:</label>
+	        <input type="text" id="userID" name="userID" required>
+	        <br>
+	        <label for="userPassword">PW:</label>
+	        <input type="password" id="userPassword" name="userPassword" required>
+    	</form>
+        <div class="btnbox">
+        	<button type="button" onClick="location.href='play'">Shooting!!</button>
+        </div>
+    </div>    
+</body>
+</html>

@@ -1,0 +1,5 @@
+package com.ureca.person.controller;
+
+public class HomeController {
+
+}

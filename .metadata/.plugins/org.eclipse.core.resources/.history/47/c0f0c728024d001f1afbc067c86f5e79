@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Record Ranking</title>
+<style>
+html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+    .container {
+        background-image: url('${pageContext.request.contextPath}/static/background.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+  <h3>기록 등록</h3>
+  <!-- <form method="post" action="/person/form"> -->
+  <!-- <form method="post" action="form"> -->
+  <form method="post">
+    이름: <input type="text" name="name"><br>
+    점수: <input type="text" name="age"><br>
+    닉네임: <input type="text" name="job"><br>
+   <button>입력</button>
+  </form>
+  <br>
+  <a href="list">랭킹 보기</a>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

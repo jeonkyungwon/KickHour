@@ -1,0 +1,213 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KickHour Play</title>
+<style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+    .container {
+        background-image: url('${pageContext.request.contextPath}/static/background.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .keeper {
+        width: 200px;
+        height: auto;
+        position: absolute;
+        bottom: 35%;
+        left: calc(50% - 100px);
+        transition: all 0.5s;
+    }
+    .diving-keeper {
+        width: 200px;
+        height: auto;
+        position: absolute;
+        bottom: 35%;
+        left: calc(50% - 100px);
+        transition: all 0.5s;
+    }
+    .soccerball {
+        width: 60px; 
+        height: auto;
+        position: absolute;
+        bottom: 10%;
+        left: calc(50% - 30px); 
+        cursor: pointer;
+        transition: all 0.5s;
+    }
+    .score-box {
+        position: absolute;
+        bottom: 80px;
+        left: 80px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #FFFFFF;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 30px;
+    }
+    .message-box {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #FFFFFF;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+    button {
+        background-color: #3460FE;
+        border-radius: 10px;
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
+        color: #FFFFFF;
+        border: none;
+        margin-top: 1%;
+        position: absolute;
+        bottom: 80px;
+        right: 80px;
+    }
+</style>
+<script>
+    let score = 0;
+    let attempts = 0;
+    const maxAttempts = 5;
+    const directions = ["center", "left", "right"];
+    let selectedDirection = "center";
+    let isMoving = false;
+
+    function updateScore() {
+        document.getElementById("score").innerText = "SCORE: " + score;
+    }
+
+    function showMessage(message) {
+        document.getElementById("message").innerText = message;
+    }
+
+    function getRandomDirection() {
+        return directions[Math.floor(Math.random() * directions.length)];
+    }
+
+    function moveElements() {
+        if (isMoving) return;
+
+        isMoving = true;
+
+        const ball = document.querySelector(".soccerball");
+        const keeper = document.querySelector(".keeper");
+
+        let ballPosition;
+        if (selectedDirection === "center") {
+            ballPosition = "calc(50% - 30px)";
+        } else if (selectedDirection === "left") {
+            ballPosition = "calc(30% - 30px)";
+        } else {
+            ballPosition = "calc(70% - 30px)";
+        }
+        ball.style.left = ballPosition;
+        ball.style.bottom = "60%";
+
+        const keeperDirection = getRandomDirection();
+        let keeperPosition;
+        let keeperTransform = "";
+        let divingKeeperClass = "";
+        if (keeperDirection === "center") {
+            keeperPosition = "calc(50% - 100px)";
+            keeperTransform = "rotate(0deg)";
+        } else if (keeperDirection === "left") {
+            keeperPosition = "calc(30% - 100px)";
+            keeperTransform = "rotate(-45deg)";
+        } else {
+            keeperPosition = "calc(70% - 100px)";
+            keeperTransform = "rotate(45deg)";
+        }
+        keeper.style.left = keeperPosition;
+        keeper.src = "${pageContext.request.contextPath}/static/divingkeeper.png";
+        keeper.className = "diving-keeper";
+        keeper.style.transform = keeperTransform;
+
+        if (selectedDirection !== keeperDirection) {
+            score += 1;
+        }
+        updateScore();
+        attempts += 1;
+
+        if (attempts >= maxAttempts) {
+            if (score >= 3) {
+                showMessage("You win!");
+            } else {
+                showMessage("You lose!");
+            }
+            document.removeEventListener("keydown", handleKeydown);
+        }
+    }
+
+    function resetPositions() {
+        const ball = document.querySelector(".soccerball");
+        const keeper = document.querySelector(".keeper");
+
+        ball.style.left = "calc(50% - 30px)";
+        ball.style.bottom = "10%";
+        keeper.style.left = "calc(50% - 100px)";
+        keeper.src = "${pageContext.request.contextPath}/static/goalkeeper.png";
+        keeper.className = "keeper";
+        keeper.style.transform = "rotate(0deg)";
+        isMoving = false;
+    }
+
+    function handleKeydown(event) {
+        if (event.key === "ArrowUp") {
+            selectedDirection = "center";
+        } else if (event.key === "ArrowLeft") {
+            selectedDirection = "left";
+        } else if (event.key === "ArrowRight") {
+            selectedDirection = "right";
+        } else if (event.key === " ") {
+            if (isMoving) {
+                resetPositions();
+            } else {
+                moveElements();
+            }
+        }
+    }
+
+    window.onload = function() {
+        document.addEventListener("keydown", handleKeydown);
+    }
+</script>
+</head>
+<body>
+    <div class="container">
+        <div class="keeperbox">
+            <img src="${pageContext.request.contextPath}/static/goalkeeper.png" class="keeper">
+        </div>
+        <div class="spacer">
+            <img src="${pageContext.request.contextPath}/static/soccerball.png" class="soccerball">
+        </div>
+        <div class="score-box" id="score-box">
+            <span id="score">SCORE: 0</span>
+        </div>
+        <div class="message-box" id="message">
+            <span></span>
+        </div>
+        <button type="button" onClick="location.href='play'">다시 하기</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+package com.ureca.person.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ureca.person.dto.Person;
+
+//@Controller
+@RestController
+@RequestMapping("/test")
+public class TestController {
+	
+	@GetMapping("/he")
+//	@ResponseBody
+	public String m1() {
+		return "hello";
+	}
+	
+	@GetMapping("/she")
+//	@ResponseBody
+	public Person m2() {
+//		Person person = new Person(0, "라임", 0, "학생");
+//		return person;
+		return new Person(0, "라임", 0, "학생");
+	}
+	
+	@GetMapping("/we")
+//	@ResponseBody
+	public List<Person> m3() {
+		List<Person> list = new ArrayList<>();
+			list.add(new Person(0, "라임", 13, "학생"));
+			list.add(new Person(1, "길동", 14, "학생"));
+			list.add(new Person(2, "주원", 15, "학생"));
+		
+		return list;
+	}
+}

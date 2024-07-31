@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kick Hour Ranking</title>
+<style>
+	html,
+	body {
+		width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+	}
+    .container {
+        background-image: url('${pageContext.request.contextPath}/static/background.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+	  	justify-content: center;
+ 	 	align-items: center;
+    }
+    .rankbox {
+		display: flex;
+    	justify-content: center;
+    	align-items: center;
+    	background-color: #3460FE;
+    	border-radius: 10px;
+    	width: 250px;
+    	height: 50px;
+    	font-size: 30px;
+    	color: #FFFFFF;
+    	border: none;
+    }
+	button {
+    	background-color: #3460FE;
+    	border-radius: 10px;
+    	width: 200px;
+    	height: 50px;
+    	font-size: 20px;
+    	color: #FFFFFF;
+    	border: none;
+    }
+    img{
+    	width: 75%;
+    	height: 95%;
+    }
+</style>
+</head>
+<body>
+	<div class="container">
+        <img src="${pageContext.request.contextPath}/static/ranking.png"></img>
+       	<button type="button" onClick="location.href='play'">게임 시작</button>        
+	</div>
+</body>
+</html>

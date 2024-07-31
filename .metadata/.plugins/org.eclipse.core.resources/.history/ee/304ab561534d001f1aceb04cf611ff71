@@ -1,0 +1,5 @@
+package com.ureca.person.entity;
+
+public @interface Entity {
+
+}

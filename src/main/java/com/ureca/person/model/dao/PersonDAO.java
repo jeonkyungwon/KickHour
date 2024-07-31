@@ -14,19 +14,19 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface PersonDAO {
 
-    @Insert("insert into person (name, age, job) values (#{name}, #{age}, #{job})")
+    @Insert("insert into person (name, score) values (#{name}, #{score})")
     public int insert(Person person)throws SQLException;//나는 sql실행만 전념하겠어!!
 
-    @Update("update person set age=#{age}, job=#{job} where no=#{no}")
+    @Update("update person set score=#{score}, where no=#{no}")
     public int update(Person person)throws SQLException;
 
     @Delete("delete from person where no=#{no}")
     public int delete(int no)throws SQLException;
 
-    @Select("select no,name,age,job from person where no=#{no}")
+    @Select("select no,name,score from person where no=#{no}")
     public Person select(int no)throws SQLException; //특정 Person 한명 조회 => 수정폼/상세페이지
 
-    @Select("select no,name,age,job from person order by name desc")
+    @Select("select no,name,score from person order by score desc limit 5")
     public List<Person> selectAll()throws SQLException;//모든 Person 조회
     
 /*

@@ -14,9 +14,19 @@ public class HomeController {
 		return "main";
 	}
 	
+	@GetMapping("/mode")
+	public String mode() {
+		return "mode";
+	}
+	
 	@GetMapping("/play")
 	public String play() {
 		return "play";
+	}
+	
+	@GetMapping("/recordplay")
+	public String record() {
+		return "recordplay";
 	}
 	
 	@GetMapping("/ranking")

@@ -1,49 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Kick Hour Ranking</title>
+<title>Ranking</title>
 <style>
-	html,
-	body {
-		width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-	}
-    .container {
-        background-image: url('${pageContext.request.contextPath}/static/background.jpg');
-        background-size: cover; 
-        background-repeat: no-repeat;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-	  	justify-content: center;
- 	 	align-items: center;
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
     }
-	button {
-    	background-color: #3460FE;
-    	border-radius: 10px;
-    	width: 200px;
-    	height: 50px;
-    	font-size: 20px;
-    	color: #FFFFFF;
-    	border: none;
-    	margin-top: 1%;
+    table {
+        margin: 0 auto;
+        border-collapse: collapse;
     }
-    img{
-    	width: 75%;
-    	height: 88%;
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #f4f4f4;
     }
 </style>
 </head>
 <body>
-	<div class="container">
-        <img src="${pageContext.request.contextPath}/static/ranking.png"></img>
-       	<button type="button" onClick="location.href='play'">다시 하기</button>        
-	</div>
+    <h1>Top 5 Scores</h1>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Nickname</th>
+            <th>Score</th>
+        </tr>
+        <tr th:each="score, iterStat : ${topScores}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${score.nickname}">Nickname</td>
+            <td th:text="${score.score}">Score</td>
+        </tr>
+    </table>
+    <button onclick="location.href='/kickhour/main'">Back to Main</button>
 </body>
 </html>

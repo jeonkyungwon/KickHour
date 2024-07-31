@@ -1,0 +1,5 @@
+package com.ureca.person.service;
+
+public class ScoreService {
+
+}

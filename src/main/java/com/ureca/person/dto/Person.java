@@ -3,19 +3,19 @@ package com.ureca.person.dto;
 public class Person {
 	private int no;
     private String name;
-    private int age;
-    private String job;
+    private int score;
     
     public Person() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Person(int no, String name, int age, String job) {
+	public Person(int no, String name, int score) {
 		super();
 		this.no = no;
 		this.name = name;
-		this.age = age;
-		this.job = job;
+		this.score = score;
+//		this.age = age;
+//		this.job = job;
 	}
 
 	public int getNo() {
@@ -34,26 +34,20 @@ public class Person {
 		this.name = name;
 	}
 
-	public int getAge() {
-		return age;
+	public int getScore() {
+		return score;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public String getJob() {
-		return job;
-	}
-
-	public void setJob(String job) {
-		this.job = job;
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	@Override
 	public String toString() {
-		return "Person [no=" + no + ", name=" + name + ", age=" + age + ", job=" + job + "]";
+		return "Person [no=" + no + ", name=" + name + ", score=" + score + "]";
 	}
-    
+
+
+
     
 }

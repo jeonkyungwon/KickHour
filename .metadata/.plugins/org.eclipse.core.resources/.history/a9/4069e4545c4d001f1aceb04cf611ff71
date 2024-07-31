@@ -1,0 +1,25 @@
+package com.ureca.person.service;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.ureca.person.repository.ScoreRepository;
+import com.ureca.person.entity.Score;
+
+@Service
+public class ScoreService {
+
+    @Autowired
+    private ScoreRepository scoreRepository;
+
+    public void saveScore(String nickname, int score) {
+        Score newScore = new Score();
+        newScore.setNickname(nickname);
+        newScore.setScore(score);
+        scoreRepository.save(newScore);
+    }
+
+    public List<Score> getTopScores() {
+        return scoreRepository.findTop5ByOrderByScoreDesc();
+    }
+}

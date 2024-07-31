@@ -1,0 +1,9 @@
+package com.ureca.person.model.service;
+
+import java.util.Map;
+
+import com.ureca.person.dto.Person;
+
+public interface PersonService {
+	public Person login(Map<String, String> map) throws Exception;
+}

@@ -1,0 +1,266 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KickHour Record Play</title>
+<style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+    .container {
+        background-image: url('${pageContext.request.contextPath}/static/background.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .keeper {
+        width: 200px;
+        height: 300px;
+        position: absolute;
+        bottom: 35%;
+        left: calc(50% - 100px);
+        transition: all 0.5s;
+    }
+    .soccerball {
+        width: 60px; 
+        height: auto;
+        position: absolute;
+        bottom: 10%;
+        left: calc(50% - 30px); 
+        cursor: pointer;
+        transition: all 0.5s;
+    }
+    .score-box {
+        position: absolute;
+        bottom: 80px;
+        left: 80px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #FFFFFF;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 30px;
+    }
+    .life-box {
+        position: absolute;
+        bottom: 150px;
+        left: 80px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #FFFFFF;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 30px;
+    }
+    .message-box {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #FFFFFF;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        z-index: 1000;
+    }
+    .message-box span {
+        font-size: 30px;
+        display: block;
+        margin-bottom: 20px;
+    }
+    .modal-button {
+        background-color: #3460FE;
+        border-radius: 10px;
+        width: 150px;
+        height: 40px;
+        font-size: 20px;
+        color: #FFFFFF;
+        border: none;
+        margin: 10px;
+        cursor: pointer;
+    }
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 500;
+    }
+    .result-image {
+    	height: 900px;
+        display: none;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+    }
+</style>
+<script>
+    let score = 0;
+    let lives = 3;
+    const directions = ["center", "left", "right"];
+    let selectedDirection = "center";
+    let isMoving = false;
+
+    function updateScore() {
+        document.getElementById("score").innerText = "SCORE: " + score;
+        document.getElementById("life").innerText = "LIFE: " + lives;
+    }
+
+    function showMessage(message) {
+        const messageBox = document.getElementById("message-box");
+        messageBox.querySelector("span").innerHTML = message;
+        messageBox.style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function getRandomDirection() {
+        return directions[Math.floor(Math.random() * directions.length)];
+    }
+
+    function moveElements() {
+        if (isMoving) return;
+
+        isMoving = true;
+
+        const ball = document.querySelector(".soccerball");
+        const keeper = document.querySelector(".keeper");
+
+        let ballPosition;
+        if (selectedDirection === "center") {
+            ballPosition = "calc(50% - 30px)";
+        } else if (selectedDirection === "left") {
+            ballPosition = "calc(30% - 30px)";
+        } else {
+            ballPosition = "calc(70% - 30px)";
+        }
+        ball.style.left = ballPosition;
+        ball.style.bottom = "60%";
+
+        const keeperDirection = getRandomDirection();
+        let keeperPosition;
+        let keeperTransform = "";
+        if (keeperDirection === "center") {
+            keeperPosition = "calc(50% - 100px)";
+        } else if (keeperDirection === "left") {
+            keeperPosition = "calc(30% - 100px)";
+            keeperTransform = "rotate(-45deg)";
+        } else {
+            keeperPosition = "calc(70% - 100px)";
+            keeperTransform = "rotate(45deg)";
+        }
+        keeper.style.left = keeperPosition;
+        keeper.src = "${pageContext.request.contextPath}/static/divingkeeper.png";
+        keeper.style.width = "200px";
+        keeper.style.height = "350px";
+        keeper.style.transform = keeperTransform;
+
+        const resultImage = document.getElementById("result-image");
+        if (selectedDirection !== keeperDirection) {
+            score += 1;
+            resultImage.src = "${pageContext.request.contextPath}/static/goal.png";
+        } else {
+            lives -= 1;
+            resultImage.src = "${pageContext.request.contextPath}/static/miss.png";
+        }
+        resultImage.style.display = "block";
+
+        updateScore();
+        
+        if (lives <= 0) {
+            showMessage("Game Over!<br>SCORE: " + score);
+            document.removeEventListener("keydown", handleKeydown);
+        }
+    }
+
+    function resetPositions() {
+        const ball = document.querySelector(".soccerball");
+        const keeper = document.querySelector(".keeper");
+
+        ball.style.left = "calc(50% - 30px)";
+        ball.style.bottom = "10%";
+        keeper.style.left = "calc(50% - 100px)";
+        keeper.src = "${pageContext.request.contextPath}/static/goalkeeper.png";
+        keeper.style.transform = "rotate(0deg)";
+
+        const resultImage = document.getElementById("result-image");
+        resultImage.style.display = "none";
+
+        isMoving = false;
+    }
+
+    function handleKeydown(event) {
+        if (event.key === "ArrowUp") {
+            selectedDirection = "center";
+        } else if (event.key === "ArrowLeft") {
+            selectedDirection = "left";
+        } else if (event.key === "ArrowRight") {
+            selectedDirection = "right";
+        } else if (event.key === " ") {
+            if (isMoving) {
+                resetPositions();
+            } else {
+                moveElements();
+            }
+        }
+    }
+
+    window.onload = function() {
+        document.addEventListener("keydown", handleKeydown);
+        updateScore(); 
+    }
+
+    function playAgain() {
+        location.href = 'recordplay';
+    }
+
+    function quitGame() {
+        location.href = 'main';
+    }
+
+    function recordInput() {
+        location.href = 'form';
+    }
+</script>
+</head>
+<body>
+    <div class="container">
+        <div class="keeperbox">
+            <img src="${pageContext.request.contextPath}/static/goalkeeper.png" class="keeper">
+        </div>
+        <div class="spacer">
+            <img src="${pageContext.request.contextPath}/static/soccerball.png" class="soccerball">
+        </div>
+        <div class="life-box" id="life-box">
+            <span id="life">LIFE: 3</span>
+        </div>
+        <div class="score-box" id="score-box">
+            <span id="score">SCORE: 0</span>
+        </div>
+        <img src="" id="result-image" class="result-image">
+        <div class="overlay" id="overlay"></div>
+        <div class="message-box" id="message-box">
+            <span></span>
+            <button class="modal-button" onclick="playAgain()">다시 하기</button>
+            <button class="modal-button" onclick="quitGame()">종료하기</button>
+            <button class="modal-button" onclick="recordInput()">기록 입력하기</button>
+        </div>
+    </div>
+</body>
+</html>

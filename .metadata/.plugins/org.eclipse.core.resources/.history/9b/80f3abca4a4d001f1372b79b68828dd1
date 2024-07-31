@@ -1,0 +1,50 @@
+package com.ureca.person.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import com.ureca.person.service.ScoreService;
+
+@Controller
+@RequestMapping("/kickhour")
+public class HomeController {
+
+    @Autowired
+    private ScoreService scoreService;
+    
+    @GetMapping("/main")
+    public String main() {
+        return "main";
+    }
+    
+    @GetMapping("/mode")
+    public String mode() {
+        return "mode";
+    }
+    
+    @GetMapping("/play")
+    public String play() {
+        return "play";
+    }
+    
+    @GetMapping("/recordplay")
+    public String record() {
+        return "recordplay";
+    }
+    
+    @GetMapping("/ranking")
+    public String ranking(Model model) {
+        model.addAttribute("topScores", scoreService.getTopScores());
+        return "ranking";
+    }
+    
+    @PostMapping("/submitScore")
+    public String submitScore(@RequestParam("nickname") String nickname, @RequestParam("score") int score, Model model) {
+        scoreService.saveScore(nickname, score);
+        model.addAttribute("topScores", scoreService.getTopScores());
+        return "ranking";
+    }
+}

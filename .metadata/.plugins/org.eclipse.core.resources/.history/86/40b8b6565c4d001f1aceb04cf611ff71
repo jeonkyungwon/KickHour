@@ -1,0 +1,9 @@
+package com.ureca.person.repository;
+
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.ureca.person.entity.Score;
+
+public interface ScoreRepository extends JpaRepository<Score, Integer> {
+    List<Score> findTop5ByOrderByScoreDesc();
+}

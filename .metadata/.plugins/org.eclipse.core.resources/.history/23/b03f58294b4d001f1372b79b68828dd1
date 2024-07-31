@@ -1,0 +1,5 @@
+package com.ureca.person.repository;
+
+public interface ScoreRepository {
+
+}
